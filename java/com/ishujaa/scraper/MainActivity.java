@@ -26,12 +26,14 @@ public class MainActivity extends AppCompatActivity {
     ListView targetListView;
     SQLiteOpenHelper openHelper;
     TextView serviceStatus;
-    ListView logView;
+    TextView lastUpdateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        lastUpdateView = findViewById(R.id.last_update_view);
         targetListView = findViewById(R.id.target_list_view);
         openHelper = new DBHelper(this);
 
@@ -52,18 +54,6 @@ public class MainActivity extends AppCompatActivity {
             setServiceLabel();
         });
 
-        logView = findViewById(R.id.log_view);
-        try{
-            SQLiteDatabase database = openHelper.getReadableDatabase();
-            Cursor cursor = database.query("log_table",
-                    new String[]{"_id, text, time"}, null, null, null, null, null);
-            SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,
-                    cursor, new String[]{"text", "time"}, new int[]{android.R.id.text1, android.R.id.text2}, 0);
-            logView.setAdapter(cursorAdapter);
-
-        }catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
 
     }
 
@@ -105,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setServiceLabel();
+
+        String lastUpdate = "Last Updated: ";
+        try {
+            lastUpdate += new SPHelper(this).getLastUpdateTime();;
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        lastUpdateView.setText(lastUpdate);
     }
 
     @Override

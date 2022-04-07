@@ -26,18 +26,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 "group_selector TEXT," +
                 "data TEXT," +
                 "sleep INTEGER NOT NULL);");
-
-        insertRecord(sqLiteDatabase, "NIT R PL", "https://www.nitrkl.ac.in/Placement/Placement-Statistics/",
-                "div[class=row pt-2]", "h2", null, "NULL", 5000);
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("CREATE TABLE log_table (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "label TEXT NOT NULL," +
-                "text TEXT NOT NULL," +
-                "time TEXT NOT NULL);");
+
     }
 
     public void insertRecord(SQLiteDatabase db, String name, String url, String primary_selector,

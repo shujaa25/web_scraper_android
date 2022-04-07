@@ -68,44 +68,4 @@ public class DBC {
         database.close();
         return targets;
     }
-
-    public void putLog(String label, String text) throws Exception{
-        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yy HH:mm:ss");
-        Date date = new Date();
-        String time = format.format(date);
-        Log.i("DBC", "beginng txn");
-        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-
-        ContentValues targetValues = new ContentValues();
-        targetValues.put("label", label);
-        targetValues.put("text", text);
-        targetValues.put("time", time);
-        database.insert(LOG_TABLE_NAME, null, targetValues);
-
-        Log.i("DBC", "log insrtef.");
-        database.close();
-    }
-
-    public StringBuilder getLogs() throws Exception{
-        SQLiteDatabase database = sqLiteOpenHelper.getReadableDatabase();
-        Cursor cursor = database.query(LOG_TABLE_NAME, new String[]{"label, text, time"},
-                null, null, null, null, null);
-        cursor.moveToFirst();
-        StringBuilder stringBuilder = new StringBuilder("NO LOGS YET");
-        while (cursor.moveToNext()){
-            stringBuilder.append(cursor.getString(0) + ": ");
-            stringBuilder.append(cursor.getString(1) + " ");
-            stringBuilder.append(cursor.getString(2));
-            stringBuilder.append("\n");
-        }
-
-        cursor.close();
-        database.close();
-        return stringBuilder;
-    }
-    public void clearLogs(){
-        SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
-        database.delete(LOG_TABLE_NAME, null, null);
-        database.close();
-    }
 }

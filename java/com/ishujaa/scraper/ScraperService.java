@@ -46,7 +46,6 @@ public class ScraperService extends Service {
         createNotificationChannel();
 
         dbc = new DBC(this);
-        dbc.clearLogs();
 
         sendNotification("Scraper", "Service started running.", null);
 
@@ -129,21 +128,15 @@ public class ScraperService extends Service {
             do{
 
                 try{
-                    dbc.putLog("AsyncTask", "AsyncTask started.");
                     List<Target> targets = dbc.retrieveAllTargets();
-                    dbc.putLog("AsyncTask", "read the latest data.");
                     for(Target target: targets){
-                        dbc.putLog("AsyncTask", "Checking "+target.getName());
                         if(scrape(target)){
-                            dbc.putLog("AsyncTask", "Update found for "+target.getName());
                             sendNotification(target.getName(), target.getUrl(), target.getUrl());
                         }else{
-                            dbc.putLog("AsyncTask", "No update for "+target.getName());
                         }
                     }
-                    dbc.putLog("AsyncTask", "Sleeping for 10 minutes");
+                    new SPHelper(context).writeLastUpdateTime();
                     Thread.sleep(600000);//10 minutes delay for all.
-                    dbc.putLog("AsyncTask", "Sleep completed.");
 
                 }catch (Exception e){
                     //dbc.putLog("AsyncTask", e.getMessage());

@@ -37,10 +37,10 @@
         android:text="Add New Target"
         android:id="@+id/btn_add_new_target"/>
 
-    <ListView
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/log_view"/>
+        android:id="@+id/last_update_view"/>
 
 
 </LinearLayout>

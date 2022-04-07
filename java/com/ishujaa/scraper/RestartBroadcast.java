@@ -15,11 +15,7 @@ public class RestartBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        try {
-            new DBC(context).putLog("RestartBroadcast", "service restarted.");
-        } catch (Exception e) {
-            Log.i("Er", e.getMessage());
-        }
+        //inform user
 
         context.startForegroundService(new Intent(context, ScraperService.class));
     }
