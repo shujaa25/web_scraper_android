@@ -8,10 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -21,7 +18,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -83,7 +79,7 @@ public class ScraperService extends Service {
             intent = new Intent(this, WebV.class);
             intent.putExtra("url", url);
         }else{
-            intent = new Intent(this, MainActivity.class);
+            intent = new Intent(this, ScraperActivity.class);
         }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, notification_id,
