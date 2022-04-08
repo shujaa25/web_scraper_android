@@ -126,9 +126,8 @@ public class ScraperService extends Service {
                 try{
                     List<Target> targets = dbc.retrieveAllTargets();
                     for(Target target: targets){
-                        if(scrape(target)){
+                        if(target.isEnabled() && scrape(target)){
                             sendNotification(target.getName(), target.getUrl(), target.getUrl());
-                        }else{
                         }
                     }
                     new SPHelper(context).writeLastUpdateTime();

@@ -9,6 +9,15 @@ public class Target {
     private String groupSelector;
     private long sleepDuration;
     private String currentData;
+    private boolean isEnabled;
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
 
     public int getId() {
         return id;

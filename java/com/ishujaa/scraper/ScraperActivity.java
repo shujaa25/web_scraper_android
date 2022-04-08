@@ -41,7 +41,8 @@ public class ScraperActivity extends AppCompatActivity {
         });
 
         Button addNewTargetButton = findViewById(R.id.btn_add_new_target);
-        addNewTargetButton.setOnClickListener(view -> startActivity(new Intent(view.getContext(), AddNewTarget.class)));
+        addNewTargetButton.setOnClickListener(view -> startActivity(new Intent(view.getContext(),
+                AddNewTarget.class)));
 
         Button buttonStartService = findViewById(R.id.btn_start_service);
         buttonStartService.setOnClickListener(view -> {
@@ -54,7 +55,8 @@ public class ScraperActivity extends AppCompatActivity {
 
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+        for (ActivityManager.RunningServiceInfo service :
+                manager.getRunningServices(Integer.MAX_VALUE)) {
             if (ScraperService.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
@@ -80,8 +82,10 @@ public class ScraperActivity extends AppCompatActivity {
         try{
             SQLiteDatabase database = openHelper.getReadableDatabase();
             Cursor cursor = database.query("target_table",
-                    new String[]{"_id, name"}, null, null, null, null, null);
-            SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
+                    new String[]{"_id, name"},
+                    null, null, null, null, null);
+            SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this,
+                    android.R.layout.simple_list_item_1,
                     cursor, new String[]{"name"}, new int[]{android.R.id.text1}, 0);
             targetListView.setAdapter(cursorAdapter);
 

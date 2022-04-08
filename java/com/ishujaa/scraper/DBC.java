@@ -46,7 +46,7 @@ public class DBC {
         Cursor cursor = database.query(TARGET_TABLE_NAME,
                 new String[]{"_id, name, url, primary_selector," +
                         "secondary_selector, group_selector," +
-                        "sleep, data"}, null, null,
+                        "sleep, data, enabled"}, null, null,
                 null, null, null);
         cursor.moveToFirst();
 
@@ -62,6 +62,9 @@ public class DBC {
             target.setGroupSelector(cursor.getString(5));
             target.setSleepDuration(Integer.parseInt(cursor.getString(6)));
             target.setCurrentData(cursor.getString(7));
+            if(cursor.getString(8).equals("1")){
+                target.setEnabled(true);
+            }else target.setEnabled(false);
             targets.add(target);
         }while (cursor.moveToNext());
         cursor.close();

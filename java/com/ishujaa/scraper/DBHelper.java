@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "scraper";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 32;
 
     public DBHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -25,17 +25,19 @@ public class DBHelper extends SQLiteOpenHelper {
                 "secondary_selector TEXT NOT NULL," +
                 "group_selector TEXT," +
                 "data TEXT," +
-                "sleep INTEGER NOT NULL);");
+                "sleep INTEGER NOT NULL," +
+                "enabled BOOLEAN);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        //sqLiteDatabase.execSQL("ALTER TABLE target_table ADD COLUMN enabled BOOLEAN;");
+        //sqLiteDatabase.execSQL("UPDATE target_table SET enabled = true;");
     }
 
     public void insertRecord(SQLiteDatabase db, String name, String url, String primary_selector,
                              String secondary_selector, String group_selector,
-                             String data, int sleep){
+                             String data, int sleep, boolean enabled){
         ContentValues targetValues = new ContentValues();
         targetValues.put("name", name);
         targetValues.put("url", url);
@@ -44,6 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
         targetValues.put("group_selector", group_selector);
         targetValues.put("data", data);
         targetValues.put("sleep", sleep);
+        targetValues.put("enabled", enabled);
         db.insert("target_table", null, targetValues);
     }
 }

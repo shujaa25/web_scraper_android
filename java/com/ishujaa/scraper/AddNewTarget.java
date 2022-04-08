@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +37,8 @@ public class AddNewTarget extends AppCompatActivity {
         EditText editTextSleep = findViewById(R.id.edit_text_sleep);
         EditText editTextData = findViewById(R.id.edit_text_data);
 
+        CheckBox enableBox = findViewById(R.id.enabledCheck);
+
         Button insertButton = findViewById(R.id.insert_new_target);
         Button updateButton = findViewById(R.id.update_new_target);
         Button deleteButton = findViewById(R.id.delete_target);
@@ -58,7 +61,8 @@ public class AddNewTarget extends AppCompatActivity {
                 Cursor cursor = database.query("target_table",
                         new String[]{"name, url, primary_selector," +
                                 "secondary_selector, group_selector," +
-                                "sleep, data"}, "_id=?", new String[]{Integer.toString(targetId)},
+                                "sleep, data, enabled"}, "_id=?",
+                        new String[]{Integer.toString(targetId)},
                         null, null, null);
 
                 cursor.moveToFirst();
@@ -69,6 +73,10 @@ public class AddNewTarget extends AppCompatActivity {
                 editTextGroupSelector.setText(cursor.getString(4));
                 editTextSleep.setText(cursor.getString(5));
                 editTextData.setText(cursor.getString(6));
+
+                if(cursor.getString(7).equals("1")){
+                    enableBox.setChecked(true);
+                }else enableBox.setChecked(false);
 
                 cursor.close();
                 database.close();
@@ -90,19 +98,25 @@ public class AddNewTarget extends AppCompatActivity {
                         ContentValues targetValues = new ContentValues();
                         targetValues.put("name", editTextName.getText().toString());
                         targetValues.put("url", editTextURL.getText().toString());
-                        targetValues.put("primary_selector", editTextPrimarySelector.getText().toString());
-                        targetValues.put("secondary_selector", editTextSecondarySelector.getText().toString());
-                        targetValues.put("group_selector", editTextGroupSelector.getText().toString());
+                        targetValues.put("primary_selector",
+                                editTextPrimarySelector.getText().toString());
+                        targetValues.put("secondary_selector",
+                                editTextSecondarySelector.getText().toString());
+                        targetValues.put("group_selector",
+                                editTextGroupSelector.getText().toString());
                         targetValues.put("sleep", editTextSleep.getText().toString());
                         targetValues.put("data", editTextData.getText().toString());
+                        targetValues.put("enabled", enableBox.isChecked());
 
                         database.update("target_table", targetValues, "_id=?",
                                 new String[]{String.valueOf(targetId)});
                         database.close();
-                        Toast.makeText(view.getContext(), "Updated Successfully.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Updated Successfully.",
+                                Toast.LENGTH_SHORT).show();
 
                     }catch (Exception e){
-                        Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(view.getContext(), e.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -116,10 +130,12 @@ public class AddNewTarget extends AppCompatActivity {
                                 new String[]{String.valueOf(targetId)});
 
                         database.close();
-                        Toast.makeText(view.getContext(), "Deleted Successfully.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Deleted Successfully.",
+                                Toast.LENGTH_SHORT).show();
                         finish();
                     }catch (Exception e){
-                        Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(view.getContext(), e.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -131,16 +147,21 @@ public class AddNewTarget extends AppCompatActivity {
                     try{
                         SQLiteDatabase database = sqLiteOpenHelper.getWritableDatabase();
                         new DBHelper(view.getContext()).insertRecord(database,
-                                editTextName.getText().toString(), editTextURL.getText().toString(),
+                                editTextName.getText().toString(),
+                                editTextURL.getText().toString(),
                                 editTextPrimarySelector.getText().toString(),
                                 editTextSecondarySelector.getText().toString(),
                                 editTextGroupSelector.getText().toString(),
-                                "initiated", Integer.parseInt(editTextSleep.getText().toString()));
+                                "initiated",
+                                Integer.parseInt(editTextSleep.getText().toString()),
+                                enableBox.isChecked());
                         database.close();
-                        Toast.makeText(view.getContext(), "Inserted Successfully.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Inserted Successfully.",
+                                Toast.LENGTH_SHORT).show();
                         finish();
                     }catch (Exception e){
-                        Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(view.getContext(), e.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
 
                 }
