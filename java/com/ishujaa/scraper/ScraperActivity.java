@@ -82,8 +82,9 @@ public class ScraperActivity extends AppCompatActivity {
         try{
             SQLiteDatabase database = openHelper.getReadableDatabase();
             Cursor cursor = database.query("target_table",
-                    new String[]{"_id, name"},
-                    null, null, null, null, null);
+                    new String[]{"_id, name, enabled"},
+                    null, null, null, null, "enabled ASC");
+
             SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this,
                     android.R.layout.simple_list_item_1,
                     cursor, new String[]{"name"}, new int[]{android.R.id.text1}, 0);
